@@ -82,7 +82,7 @@
     value: "{{ swappiness }}"
     state: present
     reload: yes
-    ignoreerrors: yes
+  ignore_errors: yes
 
 - block:
     - name: Stop the firewall service
