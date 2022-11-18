@@ -9,7 +9,7 @@
      }}"
 
 - name: Get AMI information
-  ec2_ami_facts:
+  ec2_ami_info:
     region: "{{ cloud_config.region }}"
     image_ids: "{{ outer_loop.image }}"
   register: current_ami
@@ -104,12 +104,12 @@
   ec2_tag:
     region: "{{ cloud_config.region }}"
     resource: "{{ local_loop.1.id }}"
-    tags: "{{ aws_tags | combine({'Instance': local_loop.1.attachment_set.instance_id}, {'Device': local_loop.1.attachment_set.device}) }}"
+    tags: "{{ aws_tags | combine({'Instance': local_loop.1.attachment_set.0.instance_id}, {'Device': local_loop.1.attachment_set.0.device}) }}"
   with_subelements:
     - "{{ ec2_instances_volumes.results }}"
     - volumes
   loop_control:
-    label: "{{ local_loop.1.id }} - {{ local_loop.1.attachment_set.device }}"
+    label: "{{ local_loop.1.id }} - {{ local_loop.1.attachment_set.0.device }}"
     loop_var: local_loop
 
 - name: Wait for SSH to start

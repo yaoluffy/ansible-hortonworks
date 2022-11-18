@@ -5,7 +5,7 @@
 
 cluster_name: 'mytestcluster'
 
-ambari_version: '2.7.4.0'                                 # must be the 4-part full version number
+ambari_version: '2.7.4.14'                                # must be the 4-part full version number
 
 hdp_version: '3.1.4.0'                                    # must be the 4-part full version number
 hdp_build_number: 'auto'                                  # the HDP build number from docs.hortonworks.com (if set to 'auto', Ansible will try to get it from the repository)
@@ -16,7 +16,7 @@ hdf_build_number: 'auto'                                  # the HDF build number
 hdpsearch_version: '4.0.0'                                # must be the full version number
 hdpsearch_build_number: '400'                             # the HDP Search build number from docs.hortonworks.com
 
-repo_base_url: 'http://public-repo-1.hortonworks.com'     # change this if using a Local Repository
+repo_base_url: 'https://c6b01763-55c3-44c7-b55b-84db747a6b08:759b5bb94e83@archive.cloudera.com/p'     # change this if using a Local Repository
 
 
 ###########################
@@ -32,7 +32,7 @@ timezone: UTC
 ## java configuration ##
 ########################
 
-java: 'embedded'                                          # can be set to 'embedded', 'openjdk' or 'oraclejdk'
+java: 'openjdk'                                         # can be set to 'embedded', 'openjdk' or 'oraclejdk'
 oraclejdk_options:                                        # only used when java is set to 'oraclejdk'
   base_folder: '/usr/java'                                # the folder where the Java package should be unpacked to
   tarball_location: '/tmp/jdk-8u181-linux-x64.tar.gz'     # the location of the tarball on the remote system or on the Ansible controller
