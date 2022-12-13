@@ -90,7 +90,7 @@ security_options:
   kdc_master_key: "{{ default_password }}"                # only used when security is set to 'mit-kdc'
   ldap_url: 'ldaps://ad.example.com:636'                  # only used when security is set to 'active-directory'
   container_dn: 'OU=hadoop,DC=example,DC=com'             # only used when security is set to 'active-directory'
-  http_authentication: yes                                # set to yes to enable HTTP authentication (SPNEGO)
+  http_authentication: no                                # set to yes to enable HTTP authentication (SPNEGO)
   manage_krb5_conf: yes                                   # set to no if using FreeIPA/IdM
 
 
@@ -177,28 +177,45 @@ base_tmp_dir: '/tmp'
 blueprint_name: '{{ cluster_name }}_blueprint'            # the name of the blueprint as it will be stored in Ambari
 blueprint_file: 'blueprint_dynamic.j2'                    # the blueprint JSON file - 'blueprint_dynamic.j2' is a Jinja2 template that generates the required JSON
 blueprint_dynamic:                                        # properties for the dynamic blueprint - these are only used by the 'blueprint_dynamic.j2' template to generate the JSON
-  - host_group: "hdp-master"
+  - host_group: "hdp-admin"
     clients: ['ZOOKEEPER_CLIENT', 'HDFS_CLIENT', 'YARN_CLIENT', 'MAPREDUCE2_CLIENT', 'TEZ_CLIENT', 'PIG', 'SQOOP', 'HIVE_CLIENT', 'HBASE_CLIENT', 'ATLAS_CLIENT', 'INFRA_SOLR_CLIENT', 'SPARK2_CLIENT']
     services:
+      - AMBARI_SERVER
       - ZOOKEEPER_SERVER
-      - NAMENODE
-      - SECONDARY_NAMENODE
-      - RESOURCEMANAGER
+      - JOURNALNODE
       - APP_TIMELINE_SERVER
       - YARN_REGISTRY_DNS
       - TIMELINE_READER
       - HISTORYSERVER
       - SPARK2_JOBHISTORYSERVER
-      - HIVE_SERVER
-      - HIVE_METASTORE
-      - HBASE_MASTER
-      - ATLAS_SERVER
       - KNOX_GATEWAY
-      - AMBARI_SERVER
       - INFRA_SOLR
+      - ATLAS_SERVER
       - METRICS_COLLECTOR
       - METRICS_GRAFANA
       - METRICS_MONITOR
+  - host_group: "hdp-master1"
+    clients: ['ZOOKEEPER_CLIENT', 'HDFS_CLIENT', 'YARN_CLIENT', 'MAPREDUCE2_CLIENT', 'TEZ_CLIENT', 'PIG', 'SQOOP', 'HIVE_CLIENT', 'HBASE_CLIENT', 'ATLAS_CLIENT', 'INFRA_SOLR_CLIENT', 'SPARK2_CLIENT']
+    services:
+      - ZOOKEEPER_SERVER
+      - NAMENODE
+      - ZKFC
+      - JOURNALNODE
+      - RESOURCEMANAGER
+      - HIVE_SERVER
+      - HIVE_METASTORE
+      - HBASE_MASTER
+  - host_group: "hdp-master2"
+    clients: ['ZOOKEEPER_CLIENT', 'HDFS_CLIENT', 'YARN_CLIENT', 'MAPREDUCE2_CLIENT', 'TEZ_CLIENT', 'PIG', 'SQOOP', 'HIVE_CLIENT', 'HBASE_CLIENT', 'ATLAS_CLIENT', 'INFRA_SOLR_CLIENT', 'SPARK2_CLIENT']
+    services:
+      - ZOOKEEPER_SERVER
+      - NAMENODE
+      - ZKFC
+      - JOURNALNODE
+      - RESOURCEMANAGER
+      - HIVE_SERVER
+      - HIVE_METASTORE
+      - HBASE_MASTER
   - host_group: "hdp-slave"
     clients: ['ZOOKEEPER_CLIENT', 'HDFS_CLIENT', 'YARN_CLIENT', 'MAPREDUCE2_CLIENT', 'TEZ_CLIENT', 'PIG', 'SQOOP', 'HIVE_CLIENT', 'HBASE_CLIENT', 'ATLAS_CLIENT', 'INFRA_SOLR_CLIENT', 'SPARK2_CLIENT']
     services:
