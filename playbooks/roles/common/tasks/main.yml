@@ -82,7 +82,7 @@
     value: "{{ swappiness }}"
     state: present
     reload: yes
-  ignore_errors: yes
+  ignore_errors: yes # only ignore for container
 
 - block:
     - name: Stop the firewall service
@@ -102,12 +102,14 @@
   selinux:
     state: disabled
   when: ansible_os_family|lower == "redhat" and ansible_distribution|lower != "amazon" and is_vm_docker_containers != "yes"
+  ignore_errors: yes # only ignore for not exists
 
 - name: Disable Transparent Huge Pages until the next reboot
   shell: echo never > /sys/kernel/mm/transparent_hugepage/enabled && echo never > /sys/kernel/mm/transparent_hugepage/defrag
   args:
     removes: /sys/kernel/mm/transparent_hugepage/enabled
   when: is_vm_docker_containers != "yes"
+  ignore_errors: yes # only ignore for container
 
 - name: Disable Transparent Huge Pages in Grub 2
   lineinfile:
@@ -120,6 +122,7 @@
         (ansible_os_family|lower == "suse" and ansible_distribution_major_version|int >= 12)) and 
         is_vm_docker_containers != "yes"
   notify: Generate the Grub config file
+  ignore_errors: yes # only ignore for not exists
 
 - name: Set timezone to "{{ timezone }}"
   timezone:
