@@ -184,6 +184,7 @@ blueprint_dynamic:                                        # properties for the d
       - ZOOKEEPER_SERVER
       - APP_TIMELINE_SERVER
       - YARN_REGISTRY_DNS
+      - TIMELINE_READER
       - HISTORYSERVER
       - SPARK2_JOBHISTORYSERVER
       - KNOX_GATEWAY
